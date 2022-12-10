@@ -115,7 +115,7 @@ namespace SmartFit_API.Controllers
             return usuario;
         }
          
-
+       
 
         // GET: api/Usuarios/correo
         [HttpGet("{Correo}")]
