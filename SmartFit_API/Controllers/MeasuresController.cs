@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using P6Shop_API_EdisonChavarriaVasquez;
 using SmartFit_API.Models;
+using SmartFit_API.Models.DTOs;
 
 namespace SmartFit_API.Controllers
 {
@@ -43,6 +44,89 @@ namespace SmartFit_API.Controllers
             return measure;
         }
 
+
+
+
+        // GET: api/Users/GetUserInfo?email=a@gmail.com
+        [HttpGet("GetUserMeasure")]
+        public ActionResult<IEnumerable<MeasureDTO>> GetUserMeasure(int userid)
+        {
+            //las consultas linq se parece a los normales.
+            var query = (from u in _context.Measures
+                         where u.IdUsuario == userid
+                         select new
+                         {
+                             idmeasure = u.IdMeasure,
+                             idusuario = u.IdUsuario,
+                             altura = u.Altura,
+                             peso = u.Peso,
+                             bodyfat = u.BodyFat,
+                             skeletalmuscle = u.SkeletalMuscle,
+                             
+
+
+                         }).ToList();
+            List<MeasureDTO> list = new List<MeasureDTO>();
+
+            foreach (var item in query)
+            {
+                MeasureDTO NewItem = new MeasureDTO();
+
+                NewItem.IdMeasure = item.idmeasure;
+                NewItem.IdUsuario = item.idusuario;
+                NewItem.Altura = item.altura;
+                NewItem.Peso = item.peso;
+                NewItem.BodyFat = item.bodyfat;
+                NewItem.SkeletalMuscle = item.skeletalmuscle;
+
+                list.Add(NewItem);
+            }
+
+
+
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return list;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // GET: api/Measures/5
+        [HttpGet("user/{IdUsuario}")]
+        public async Task<ActionResult<Measure>> GetMeasureWithUserID(int IdUsuario)
+        {
+            var measure = await _context.Measures.FindAsync(IdUsuario);
+
+            if (measure == null)
+            {
+                return NotFound();
+            }
+
+            return measure;
+        }
+
+
         // PUT: api/Measures/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -71,7 +155,7 @@ namespace SmartFit_API.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Measures

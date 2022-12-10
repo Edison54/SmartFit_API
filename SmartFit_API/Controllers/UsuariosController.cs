@@ -7,13 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using P6Shop_API_EdisonChavarriaVasquez;
 using SmartFit_API.Models;
+using SmartFit_API.Models.DTOs;
 using SmartFit_API.Tools;
 
 namespace SmartFit_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ApiKey]
+   // [ApiKey]
     public class UsuariosController : ControllerBase
     {
         private readonly SmartFitContext _context;
@@ -24,6 +25,74 @@ namespace SmartFit_API.Controllers
             _context = context;
             MyCrypto = new Tools.Crypto();
         }
+
+        // GET: api/Users/GetUserInfo?email=a@gmail.com
+        [HttpGet("GetUserInfo")]
+        public ActionResult<IEnumerable<UsuarioDTO>> GetUserInfo(string email)
+        {
+            //las consultas linq se parece a los normales.
+            var query = (from u in _context.Usuarios
+                         where u.Correo == email 
+                         select new
+                         {
+                             idusuario = u.IdUsuario,
+                             nombre = u.Nombre,
+                             appelidos = u.Apellidos,
+                             rol = u.Rol,
+                             direccion = u.Direccion,
+                             fechainicio = u.FechaInicio,
+                             fechanacimiento = u.FechaNacimiento,
+                             telefono = u.Telefono,
+                             correo = u.Correo, 
+                             password = u.Password
+
+
+
+                         }).ToList();
+            List<UsuarioDTO> list = new List<UsuarioDTO>();
+
+            foreach (var item in query)
+            {
+                UsuarioDTO NewItem = new UsuarioDTO();
+
+                NewItem.IdUsuario = item.idusuario;
+                NewItem.Nombre = item.nombre;
+                NewItem.Apellidos = item.appelidos;
+                NewItem.Rol = item.rol;
+                NewItem.Direccion = item.direccion;
+                NewItem.FechaInicio = item.fechainicio;
+                NewItem.FechaNacimiento = item.fechanacimiento;
+                NewItem.Telefono = item.telefono;
+                NewItem.Correo = item.correo;
+                NewItem.Password = item.password;
+                list.Add(NewItem);
+            }
+
+
+
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return list;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // GET: api/Usuarios
         [HttpGet]
@@ -45,6 +114,23 @@ namespace SmartFit_API.Controllers
 
             return usuario;
         }
+
+
+
+        // GET: api/Usuarios/correo
+        [HttpGet("{Correo}")]
+        public async Task<ActionResult<Usuario>> GetUsuarioWithEmail(int Correo)
+        {
+            var usuario = await _context.Usuarios.FindAsync(Correo);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            return usuario;
+        }
+
 
         // GET: api/Users/5
         [HttpGet("ValidateLogin")]

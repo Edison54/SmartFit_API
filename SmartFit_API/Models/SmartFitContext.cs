@@ -81,13 +81,13 @@ namespace SmartFit_API.Models
                     .HasColumnType("decimal(5, 2)")
                     .HasColumnName("altura");
 
-                entity.Property(e => e.Grasa)
+                entity.Property(e => e.BodyFat)
                     .HasColumnType("decimal(5, 2)")
-                    .HasColumnName("grasa");
+                    .HasColumnName("body_fat");
 
-                entity.Property(e => e.GrasaViseral)
+                entity.Property(e => e.SkeletalMuscle)
                     .HasColumnType("decimal(5, 2)")
-                    .HasColumnName("grasa_viseral");
+                    .HasColumnName("skeletal_muscle");
 
                 entity.Property(e => e.IdUsuario).HasColumnName("id_Usuario");
 
@@ -146,9 +146,9 @@ namespace SmartFit_API.Models
                     .IsUnicode(false)
                     .HasColumnName("estado");
 
-                entity.Property(e => e.FechaNacimiento)
+                entity.Property(e => e.FechaPago)
                     .HasColumnType("date")
-                    .HasColumnName("fecha_nacimiento");
+                    .HasColumnName("fecha_pago");
 
                 entity.Property(e => e.IdUsuario).HasColumnName("id_Usuario");
 

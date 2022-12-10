@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using P6Shop_API_EdisonChavarriaVasquez;
 using SmartFit_API.Models;
-
+using SmartFit_API.Models.DTOs;
 namespace SmartFit_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ApiKey]
+    //[ApiKey]
     public class MusclesMeasuresController : ControllerBase
     {
         private readonly SmartFitContext _context;
@@ -42,6 +42,72 @@ namespace SmartFit_API.Controllers
 
             return musclesMeasure;
         }
+
+
+
+
+
+
+        // GET: api/MusclesMeasures
+        [HttpGet("GetMusclesList")]
+        public ActionResult<IEnumerable<MusclesMeasureDTO>> GetItemList(int userid)
+        {
+
+
+            var query = from i in _context.MusclesMeasures
+
+                        where i.IdUsuario == userid
+                        select new
+                        {
+                            IDMuscle = i.IdMuscle,
+                            IDUser = i.IdUsuario,
+                            MuscleName = i.Musculo,
+                            MEASURE = i.Medida,
+                            DateOfMeasure = i.FechaMedida
+
+
+
+
+
+
+    };
+            List<MusclesMeasureDTO> MusclesList = new List<MusclesMeasureDTO>();
+
+            foreach (var item in query)
+            {
+                MusclesList.Add(
+                    new MusclesMeasureDTO
+                    {
+                        IdMuscle = item.IDMuscle,
+                        IdUsuario = item.IDUser,
+                        Musculo = item.MuscleName,
+                        Medida = item.MEASURE,
+                        FechaMedida = item.DateOfMeasure,
+                     
+
+                    });
+            };
+
+
+            if (MusclesList == null)
+            {
+                return NotFound();
+            }
+
+            return MusclesList;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
         // PUT: api/MusclesMeasures/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

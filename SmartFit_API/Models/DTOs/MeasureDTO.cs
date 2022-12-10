@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SmartFit_API.Models
+﻿namespace SmartFit_API.Models.DTOs
 {
-    public partial class Measure
+    public class MeasureDTO
     {
+
         public int IdMeasure { get; set; }
         public int IdUsuario { get; set; }
         public decimal Altura { get; set; }
@@ -12,6 +10,8 @@ namespace SmartFit_API.Models
         public decimal BodyFat { get; set; }
         public decimal SkeletalMuscle { get; set; }
 
-        public virtual Usuario? IdUsuarioNavigation { get; set; } = null!;
+
+
+
     }
 }
