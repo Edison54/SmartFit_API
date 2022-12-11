@@ -79,17 +79,60 @@ namespace SmartFit_API.Controllers
             return list;
         }
 
+        // GET: api/Users/GetUserInfo?email=a@gmail.com
+        [HttpGet("GetUserEmail")]
+        public ActionResult<IEnumerable<UsuarioDTO>> GetUserEmail (string email)
+        {
+            //las consultas linq se parece a los normales.
+            var query = (from u in _context.Usuarios
+                         where u.Correo == email
+                         select new
+                         {
+                             idusuario = u.IdUsuario,
+                             nombre = u.Nombre,
+                             appelidos = u.Apellidos,
+                             rol = u.Rol,
+                             direccion = u.Direccion,
+                             fechainicio = u.FechaInicio,
+                             fechanacimiento = u.FechaNacimiento,
+                             telefono = u.Telefono,
+                             correo = u.Correo,
+                             password = u.Password
+
+
+
+                         }).ToList();
+            List<UsuarioDTO> list = new List<UsuarioDTO>();
+
+            foreach (var item in query)
+            {
+                UsuarioDTO NewItem = new UsuarioDTO();
+
+                NewItem.IdUsuario = item.idusuario;
+                NewItem.Nombre = item.nombre;
+                NewItem.Apellidos = item.appelidos;
+                NewItem.Rol = item.rol;
+                NewItem.Direccion = item.direccion;
+                NewItem.FechaInicio = item.fechainicio;
+                NewItem.FechaNacimiento = item.fechanacimiento;
+                NewItem.Telefono = item.telefono;
+                NewItem.Correo = item.correo;
+                NewItem.Password = item.password;
+                list.Add(NewItem);
+            }
 
 
 
 
+           
+            bool isEmpty = !list.Any();
+            if (isEmpty)
+            {
+                return NotFound();
+            }
 
-
-
-
-
-
-
+            return list;
+        }
 
 
 
@@ -115,21 +158,7 @@ namespace SmartFit_API.Controllers
             return usuario;
         }
          
-       
-
-        // GET: api/Usuarios/correo
-        [HttpGet("{Correo}")]
-        public async Task<ActionResult<Usuario>> GetUsuarioWithEmail(int Correo)
-        {
-            var usuario = await _context.Usuarios.FindAsync(Correo);
-
-            if (usuario == null)
-            {
-                return NotFound();
-            }
-
-            return usuario;
-        }
+      
 
 
         // GET: api/Users/5

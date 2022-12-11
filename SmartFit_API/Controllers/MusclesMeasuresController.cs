@@ -46,6 +46,50 @@ namespace SmartFit_API.Controllers
 
 
 
+        // GET: api/Users/GetUserInfo?email=a@gmail.com
+        [HttpGet("GetMuscleData")]
+        public ActionResult<IEnumerable<MusclesMeasureDTO>> GetMuscleData(int MuscleID)
+        {
+            //las consultas linq se parece a los normales.
+            var query = (from u in _context.MusclesMeasures
+                         where u.IdMuscle == MuscleID
+                         select new
+                         {
+                             IDMuscle = u.IdMuscle,
+                             IDUser = u.IdUsuario,
+                             MuscleName = u.Musculo,
+                             MEASURE = u.Medida,
+                             DateOfMeasure = u.FechaMedida
+
+
+
+                         }).ToList();
+            List<MusclesMeasureDTO> list = new List<MusclesMeasureDTO>();
+
+            foreach (var item in query)
+            {
+                MusclesMeasureDTO NewItem = new MusclesMeasureDTO();
+
+                NewItem.IdMuscle = item.IDMuscle;
+                NewItem.IdUsuario = item.IDUser;
+                NewItem.Musculo = item.MuscleName;
+                NewItem.Medida = item.MEASURE;
+                NewItem.FechaMedida = item.DateOfMeasure;
+                list.Add(NewItem);
+            }
+
+
+
+
+            if (list == null)
+            {
+                return NotFound();
+            }   
+
+            return list;
+        }
+
+
 
 
         // GET: api/MusclesMeasures

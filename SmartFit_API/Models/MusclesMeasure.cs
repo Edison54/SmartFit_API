@@ -11,6 +11,6 @@ namespace SmartFit_API.Models
         public decimal Medida { get; set; }
         public DateTime FechaMedida { get; set; }
 
-        public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
+        public virtual Usuario? IdUsuarioNavigation { get; set; } = null!;
     }
 }
