@@ -14,7 +14,7 @@ namespace SmartFit_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [ApiKey]
+   [ApiKey]
     public class UsuariosController : ControllerBase
     {
         private readonly SmartFitContext _context;

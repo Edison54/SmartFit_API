@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using P6Shop_API_EdisonChavarriaVasquez;
 using SmartFit_API.Models;
+using SmartFit_API.Models.DTOs;
 
 namespace SmartFit_API.Controllers
 {
@@ -71,8 +72,118 @@ namespace SmartFit_API.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
+
+
+        // GET: api/ExercisesMachines
+        [HttpGet("GetExercisesMachinesList")]
+        public ActionResult<IEnumerable<ExercisesMachineDTO>> GetItemList(int userid)
+        {
+
+
+            var query = from i in _context.ExercisesMachines
+
+                        where i.IdUsuario == userid
+                        select new
+                        {
+                            IDExercise = i.IdEjercicio,
+                            IDUser = i.IdUsuario,
+                            NAME = i.NameExercise,
+                            WEIGHT = i.Peso,
+                            Quantity = i.CantidadRepeticiones,
+                            TIME = i.Tiempo
+
+
+
+
+
+                        };
+            List<ExercisesMachineDTO> MusclesList = new List<ExercisesMachineDTO>();
+
+            foreach (var item in query)
+            {
+                MusclesList.Add(
+                    new ExercisesMachineDTO
+                    {
+                        IdEjercicio = item.IDExercise,
+                        IdUsuario = item.IDUser,
+                        NameExercise = item.NAME,
+                        Peso = item.WEIGHT,
+                        CantidadRepeticiones = item.Quantity,
+                        Tiempo = item.TIME
+
+                    });
+            };
+
+
+            if (MusclesList == null)
+            {
+                return NotFound();
+            }
+
+            return MusclesList;
+        }
+
+
+
+        // GET: api/Users/GetExerciseData?ExerciseID=
+        [HttpGet("GetExerciseData")]
+        public ActionResult<IEnumerable<ExercisesMachineDTO>> GetExerciseData(int ExerciseID)
+        {
+            //las consultas linq se parece a los normales.
+            var query = (from u in _context.ExercisesMachines
+                         where u.IdEjercicio == ExerciseID
+                         select new
+                         {
+                             IDExercise = u.IdEjercicio,
+                             IDUser = u.IdUsuario,
+                             NAME = u.NameExercise,
+                             WEIGHT = u.Peso,
+                             Quantity = u.CantidadRepeticiones,
+                             TIME = u.Tiempo
+
+
+
+                         }).ToList();
+            List<ExercisesMachineDTO> list = new List<ExercisesMachineDTO>();
+
+            foreach (var item in query)
+            {
+                ExercisesMachineDTO NewItem = new ExercisesMachineDTO();
+
+                NewItem.IdEjercicio = item.IDExercise;
+                NewItem.IdUsuario = item.IDUser;
+                NewItem.NameExercise = item.NAME;
+                NewItem.Peso = item.WEIGHT;
+                NewItem.CantidadRepeticiones = item.Quantity;
+                NewItem.Tiempo = item.TIME;
+                list.Add(NewItem);
+
+
+
+            }
+
+
+
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return list;
+        }
+
+
+
+
+
+
+
+
+
+
 
         // POST: api/ExercisesMachines
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

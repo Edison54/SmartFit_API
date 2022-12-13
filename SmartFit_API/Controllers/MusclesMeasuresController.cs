@@ -12,7 +12,7 @@ namespace SmartFit_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[ApiKey]
+    [ApiKey]
     public class MusclesMeasuresController : ControllerBase
     {
         private readonly SmartFitContext _context;
@@ -46,7 +46,7 @@ namespace SmartFit_API.Controllers
 
 
 
-        // GET: api/Users/GetUserInfo?email=a@gmail.com
+        // GET: api//GetUserInfo?email=a@gmail.com
         [HttpGet("GetMuscleData")]
         public ActionResult<IEnumerable<MusclesMeasureDTO>> GetMuscleData(int MuscleID)
         {
@@ -181,7 +181,7 @@ namespace SmartFit_API.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/MusclesMeasures

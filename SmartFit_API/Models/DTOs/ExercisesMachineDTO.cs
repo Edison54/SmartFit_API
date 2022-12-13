@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SmartFit_API.Models
+﻿namespace SmartFit_API.Models.DTOs
 {
-    public partial class ExercisesMachine
+    public class ExercisesMachineDTO
     {
         public int IdEjercicio { get; set; }
         public int IdUsuario { get; set; }
@@ -11,7 +8,5 @@ namespace SmartFit_API.Models
         public int Peso { get; set; }
         public string CantidadRepeticiones { get; set; } = null!;
         public string Tiempo { get; set; } = null!;
-
-        public virtual Usuario? IdUsuarioNavigation { get; set; } = null!;
     }
 }
